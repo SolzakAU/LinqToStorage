@@ -20,7 +20,7 @@ namespace LinqToStorage
       {
         Database.SetInitializer<EfContext>(new EfInitializer());
 
-        var context = new EfContext("Data Source=gavinm\\std12;Initial Catalog=integration_311_2;Integrated Security=SSPI");
+        var context = new EfContext("Data Source=.\\dev14;Initial Catalog=integration_311_2;Integrated Security=SSPI");
 
         context.Database.Initialize(true);
 
