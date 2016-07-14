@@ -18,18 +18,32 @@ namespace LinqToStorage
 
       try
       {
-        Database.SetInitializer<EfContext>(new EfInitializer());
+        //Database.SetInitializer(new KarismaSampleInitialiser());
 
-        var context = new EfContext("Data Source=gavinm\\std12;Initial Catalog=integration_311_2;Integrated Security=SSPI");
+        var context = new KarismaContext("Data Source=gavinm\\std12;Initial Catalog=Capital_Dev;Integrated Security=SSPI");
 
-        context.Database.Initialize(true);
+        //context.Database.Initialize(true);
+
+        var rs = (from r in context.WorkListReport
+                 orderby r.Key                 
+                 select new { r.RequestKey, r.ReportKey }).Take(10);
+
+        foreach (var r in rs)
+        {
+          Console.WriteLine(r.ReportKey.ToString());
+        }
+
+        Console.WriteLine(rs);
 
         var y = from p in context.Templates.PatientProperties
                 where p.PreferredName.LastName == "Kestral"
                 select p;
 
-        File.WriteAllText(@"c:\incoming\dump.sql", "use integration_311_2\r\n\r\n" + y.ToString() + "\r\n\r\nuse master");
-
+        File.WriteAllText(@"c:\incoming\dump.sql", 
+          "use " + context.Database.Connection.Database + "\r\n\r\n" + 
+          y.ToString() + "\r\n\r\n" +
+          "use master");
+        
         Console.WriteLine(y);
       } 
       catch (Exception ex)

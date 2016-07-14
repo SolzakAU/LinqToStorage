@@ -9,6 +9,35 @@ using System.Threading.Tasks;
 
 namespace LinqToStorage
 {
+  class WorkListReport
+  {
+    internal int Key { get; set; }
+    public long ReportKey { get; set; }
+    public long RequestKey { get; set; }
+    public long RequestServiceKey { get; set; }
+    public long RequestServiceStepKey { get; set; }
+    public long ReportingProviderResourceKey { get; set; }
+    public bool ReportDeleted { get; set; }
+    public bool ReportExternallyDictated { get; set; }
+    public int ReportClinicalAvailability { get; set;}
+    public int ReportProcessStatus { get; set; }
+    public bool RequestDeleted { get; set; }
+    public bool RequestRegistered { get; set; }
+    public bool RequestServiceDeleted { get; set; }
+    public bool RequestServiceStepDeleted { get; set; }
+    public bool RequestServiceStepCancelled { get; set; }
+    public long WorkSiteKey { get; set; }
+    public long ServiceTypeKey { get; set; }
+    public long ServiceDepartmentKey { get; set; }
+    public int ReportPriority { get; set; }
+    public int RequestContext { get; set; }
+    public long TypistKey { get; set; }
+    public long PrimaryKey { get; set; }
+    public long SecondaryKey { get; set; }
+    public long SupervisorKey { get; set; }
+    public long InvoicingKey { get; set; }
+  }
+
   class ContactInstance
   {
     internal int Key { get; set; }
