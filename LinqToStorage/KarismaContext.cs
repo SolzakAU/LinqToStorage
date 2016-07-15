@@ -87,7 +87,13 @@ namespace LinqToStorage
       System.Data.Entity.Core.Metadata.Edm.EntityType entityType,
       System.Collections.Generic.IEnumerable<System.Data.Entity.Core.Metadata.Edm.EdmProperty> primitiveProperties)
     {
-      return new[] { System.Data.Entity.Core.Metadata.Edm.EdmProperty.CreatePrimitive("Key", System.Data.Entity.Core.Metadata.Edm.PrimitiveType.GetEdmPrimitiveType(System.Data.Entity.Core.Metadata.Edm.PrimitiveTypeKind.Int32)) };
+      return new[] 
+      {
+        System.Data.Entity.Core.Metadata.Edm.EdmProperty.CreatePrimitive(
+          "Key", 
+          System.Data.Entity.Core.Metadata.Edm.PrimitiveType.GetEdmPrimitiveType(System.Data.Entity.Core.Metadata.Edm.PrimitiveTypeKind.Int32)
+        )
+      };
     }
   }
 

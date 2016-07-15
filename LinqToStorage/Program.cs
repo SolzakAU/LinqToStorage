@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -25,15 +26,22 @@ namespace LinqToStorage
         //context.Database.Initialize(true);
 
         var rs = (from r in context.WorkListReport
-                 orderby r.Key                 
-                 select new { r.RequestKey, r.ReportKey }).Take(10);
+                  where r.RequestRegistered && !r.ReportDeleted
+                  && r.ReportProcessStatus != ReportInstanceProcessStatus.Completed
+                  select new { r.RequestKey, r.ReportKey }).Take(100000);
+
+        var timer = Stopwatch.StartNew();
+        var rsx = rs.ToArray();
+        timer.Stop();
 
         foreach (var r in rs)
         {
-          Console.WriteLine(r.ReportKey.ToString());
+          Console.WriteLine(string.Format("{0},{1}", r.RequestKey, r.ReportKey));
         }
 
         Console.WriteLine(rs);
+
+        return;
 
         var y = from p in context.Templates.PatientProperties
                 where p.PreferredName.LastName == "Kestral"

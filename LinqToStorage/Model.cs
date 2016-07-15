@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace LinqToStorage
 {
+  enum ReportInstanceProcessStatus { NotCommenced, InProgress, Parked, Reported, ForReview, ForSecondReview, AwaitingDelayedAuthorisation, Completed }
+  enum ReportInstanceClinicalAvailability { NotReleased, Preliminary, Authorised, Amended, Withdrawn, Rework }
   class WorkListReport
   {
     internal int Key { get; set; }
@@ -19,8 +21,8 @@ namespace LinqToStorage
     public long ReportingProviderResourceKey { get; set; }
     public bool ReportDeleted { get; set; }
     public bool ReportExternallyDictated { get; set; }
-    public int ReportClinicalAvailability { get; set;}
-    public int ReportProcessStatus { get; set; }
+    public ReportInstanceClinicalAvailability ReportClinicalAvailability { get; set; }
+    public ReportInstanceProcessStatus ReportProcessStatus { get; set; }
     public bool RequestDeleted { get; set; }
     public bool RequestRegistered { get; set; }
     public bool RequestServiceDeleted { get; set; }
