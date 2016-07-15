@@ -8,16 +8,18 @@ namespace LinqToStorage
     public KarismaContext(string connection)
       : base(connection)
     {
-      Templates = new KarismaTemplates(this);
+//      Templates = new KarismaTemplates(this);
     }
 
-    public DbSet<PatientRecord> Patients { get; set; }
+    //public DbSet<PatientRecord> Patients { get; set; }
     //public DbSet<Request> Requests { get; set; }
     //public DbSet<Report> Reports { get; set; }
 
     public DbSet<WorkListReport> WorkListReport { get; set; }
+    public DbSet<RequestService> RequestService { get; set; }
+    public DbSet<RequestServiceStep> RequestServiceStep { get; set; }
 
-    public KarismaTemplates Templates { get; private set; }
+    //public KarismaTemplates Templates { get; private set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
@@ -29,57 +31,66 @@ namespace LinqToStorage
 
       modelBuilder.HasDefaultSchema("Current");
 
-      modelBuilder.Entity<WorkListReport>().ToTable("Karisma.WorkList.Report", "Virtual");
+      var ReportTable = modelBuilder.Entity<WorkListReport>().ToTable("Karisma.WorkList.Report", "Virtual");
+      //ReportTable.HasMany(Report => Report.RequestService).WithRequired().Map(Config => Config.MapKey("ReportKey").ToTable("RequestService").MapKey("ReportInstanceKey"));
+      //ReportTable.HasMany(Report => Report.RequestService).WithOptional().Map(Config => Config.MapKey("ReportKey").ToTable("Karisma.Request.Service", "Current").MapKey("ReportInstanceKey"));
 
-      modelBuilder.Entity<ContactInstance>().ToTable("[Karisma.Contact.Instance]");
-      modelBuilder.Entity<ContactAddress>().ToTable("[Karisma.Contact.Address]");
-      modelBuilder.Entity<PatientRecord>().ToTable("[Karisma.Patient.Record]");
-      /*modelBuilder.Entity<PatientRecord>()
-        .HasOptional<PatientName>(P => P.PreferredName).WithOptionalDependent()
-        .Map(m => m.MapKey("PreferredNameKey"));*/
-      modelBuilder.Entity<PatientName>().ToTable("[Karisma.Patient.Name]");
-      modelBuilder.Entity<PatientIdentifier>().ToTable("[Karisma.Patient.Identifier]");
-      /*modelBuilder.Entity<PatientIdentifier>()
-        .HasRequired(PI => PI.Type).WithRequiredDependent()
-        .Map(m => m.MapKey("PatientIdentifierTypeKey"));*/
-      modelBuilder.Entity<PatientIdentifierType>().ToTable("[Karisma.Patient.IdentifierType]");
+      var ServiceTable = modelBuilder.Entity<RequestService>().ToTable("Karisma.Request.Service", "Current");
+      ServiceTable.HasMany(Service => Service.RequestServiceStep).WithRequired(Step => Step.RequestService).Map(Config => Config.MapKey("RequestServiceKey"));
+      //ServiceTable.HasRequired(X => X.WorkListReport).WithOptional((Report => Report..RequestService).WithRequiredPrincipal(X => X..WithOptional(X => X..Report.Map(X => X.)
+
+      var ServiceStepTable = modelBuilder.Entity<RequestServiceStep>().ToTable("Karisma.Request.ServiceStep", "Current");
+      //ServiceStepTable.HasRequired(Step => Step.RequestService).WithRequiredDependent()
+
+      //modelBuilder.Entity<ContactInstance>().ToTable("[Karisma.Contact.Instance]");
+      //modelBuilder.Entity<ContactAddress>().ToTable("[Karisma.Contact.Address]");
+      //modelBuilder.Entity<PatientRecord>().ToTable("[Karisma.Patient.Record]");
+      ///*modelBuilder.Entity<PatientRecord>()
+      //  .HasOptional<PatientName>(P => P.PreferredName).WithOptionalDependent()
+      //  .Map(m => m.MapKey("PreferredNameKey"));*/
+      //modelBuilder.Entity<PatientName>().ToTable("[Karisma.Patient.Name]");
+      //modelBuilder.Entity<PatientIdentifier>().ToTable("[Karisma.Patient.Identifier]");
+      ///*modelBuilder.Entity<PatientIdentifier>()
+      //  .HasRequired(PI => PI.Type).WithRequiredDependent()
+      //  .Map(m => m.MapKey("PatientIdentifierTypeKey"));*/
+      //modelBuilder.Entity<PatientIdentifierType>().ToTable("[Karisma.Patient.IdentifierType]");
     }
   }
 
-  class KarismaTemplates
-  {
-    public KarismaTemplates(KarismaContext context)
-    {
-      this.context = context;
-    }
+  //class KarismaTemplates
+  //{
+  //  public KarismaTemplates(KarismaContext context)
+  //  {
+  //    this.context = context;
+  //  }
 
-    public DbQuery<PatientRecord> PatientProperties
-    {
-      get
-      {
-        return context.Patients
-          .Include("PreferredName")
-          .Include("Identifier");
-      }
-    }
+  //  public DbQuery<PatientRecord> PatientProperties
+  //  {
+  //    get
+  //    {
+  //      return context.Patients
+  //        .Include("PreferredName")
+  //        .Include("Identifier");
+  //    }
+  //  }
 
-    private KarismaContext context;
-  }
+  //  private KarismaContext context;
+  //}
 
-  class KarismaSampleInitialiser : DropCreateDatabaseAlways<KarismaContext>
-  {
-    protected override void Seed(KarismaContext context)
-    {
-      context.Patients.Add(new PatientRecord()
-      {
-        PreferredName = new PatientName() { FirstName = "Gavin", LastName = "Kestral" },
-        Identifier = new[] {
-          new PatientIdentifier() { PatientIdentifierType = new PatientIdentifierType() { Code = "MC" }, Value = "1234 567890 1-2" }
-        }
-      });
-      context.SaveChanges();
-    }
-  }
+  //class KarismaSampleInitialiser : DropCreateDatabaseAlways<KarismaContext>
+  //{
+  //  protected override void Seed(KarismaContext context)
+  //  {
+  //    context.Patients.Add(new PatientRecord()
+  //    {
+  //      PreferredName = new PatientName() { FirstName = "Gavin", LastName = "Kestral" },
+  //      Identifier = new[] {
+  //        new PatientIdentifier() { PatientIdentifierType = new PatientIdentifierType() { Code = "MC" }, Value = "1234 567890 1-2" }
+  //      }
+  //    });
+  //    context.SaveChanges();
+  //  }
+  //}
 
   class StorageKeyDiscoveryConvention : KeyDiscoveryConvention
   {
