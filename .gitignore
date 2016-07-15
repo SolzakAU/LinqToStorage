@@ -38,3 +38,4 @@ Icon
 # Visual Studio
 bin/
 obj/
+*.suo
