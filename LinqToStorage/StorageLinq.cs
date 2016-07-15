@@ -7,10 +7,16 @@ namespace LinqToStorage
 {
   class StorageContext
   {
-    public IQueryable<PatientRecord> Patient = new StorageQueryProvider<PatientRecord>();
-    public IQueryable<RequestRecord> Request;
-    public IQueryable<ReportInstance> Report;
-    public IQueryable<PatientIdentifier> PatientIdentifier;
+    public StorageContext()
+    {
+      PatientRecord = new StorageQueryProvider<PatientRecord>();
+      RequestRecord = new StorageQueryProvider<RequestRecord>();
+      ReportInstance = new StorageQueryProvider<ReportInstance>();
+    }
+
+    public IQueryable<PatientRecord> PatientRecord { get; private set; }
+    public IQueryable<RequestRecord> RequestRecord { get; private set; }
+    public IQueryable<ReportInstance> ReportInstance { get; private set; }
   }
 
   class StorageQueryProvider<T> : IQueryable<T>, IQueryProvider

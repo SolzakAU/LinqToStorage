@@ -21,7 +21,7 @@ namespace LinqToStorage
       {
         //Database.SetInitializer(new KarismaSampleInitialiser());
 
-        var context = new KarismaContext("Data Source=gavinm\\std12;Initial Catalog=Capital_Dev;Integrated Security=SSPI");
+        var context = new EfContext("Data Source=gavinm\\std12;Initial Catalog=Capital_Dev;Integrated Security=SSPI");
 
         //context.Database.Initialize(true);
 
