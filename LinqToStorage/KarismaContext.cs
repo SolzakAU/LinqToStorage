@@ -8,18 +8,18 @@ namespace LinqToStorage
     public KarismaContext(string connection)
       : base(connection)
     {
-//      Templates = new KarismaTemplates(this);
+      Templates = new KarismaTemplates(this);
     }
 
-    //public DbSet<PatientRecord> Patients { get; set; }
-    //public DbSet<Request> Requests { get; set; }
-    //public DbSet<Report> Reports { get; set; }
+    public DbSet<PatientRecord> Patients { get; set; }
+    public DbSet<RequestRecord> Requests { get; set; }
+    public DbSet<ReportInstance> Reports { get; set; }
 
     public DbSet<WorkListReport> WorkListReport { get; set; }
     public DbSet<RequestService> RequestService { get; set; }
     public DbSet<RequestServiceStep> RequestServiceStep { get; set; }
 
-    //public KarismaTemplates Templates { get; private set; }
+    public KarismaTemplates Templates { get; private set; }
 
     protected override void OnModelCreating(DbModelBuilder modelBuilder)
     {
@@ -57,40 +57,40 @@ namespace LinqToStorage
     }
   }
 
-  //class KarismaTemplates
-  //{
-  //  public KarismaTemplates(KarismaContext context)
-  //  {
-  //    this.context = context;
-  //  }
+  class KarismaTemplates
+  {
+    public KarismaTemplates(KarismaContext context)
+    {
+      this.context = context;
+    }
 
-  //  public DbQuery<PatientRecord> PatientProperties
-  //  {
-  //    get
-  //    {
-  //      return context.Patients
-  //        .Include("PreferredName")
-  //        .Include("Identifier");
-  //    }
-  //  }
+    public DbQuery<PatientRecord> PatientProperties
+    {
+      get
+      {
+        return context.Patients
+          .Include("PreferredName")
+          .Include("Identifier");
+      }
+    }
 
-  //  private KarismaContext context;
-  //}
+    private KarismaContext context;
+  }
 
-  //class KarismaSampleInitialiser : DropCreateDatabaseAlways<KarismaContext>
-  //{
-  //  protected override void Seed(KarismaContext context)
-  //  {
-  //    context.Patients.Add(new PatientRecord()
-  //    {
-  //      PreferredName = new PatientName() { FirstName = "Gavin", LastName = "Kestral" },
-  //      Identifier = new[] {
-  //        new PatientIdentifier() { PatientIdentifierType = new PatientIdentifierType() { Code = "MC" }, Value = "1234 567890 1-2" }
-  //      }
-  //    });
-  //    context.SaveChanges();
-  //  }
-  //}
+  class KarismaSampleInitialiser : DropCreateDatabaseAlways<KarismaContext>
+  {
+    protected override void Seed(KarismaContext context)
+    {
+      context.Patients.Add(new PatientRecord()
+      {
+        PreferredName = new PatientName() { FirstName = "Gavin", LastName = "Kestral" },
+        Identifier = new[] {
+          new PatientIdentifier() { PatientIdentifierType = new PatientIdentifierType() { Code = "MC" }, Value = "1234 567890 1-2" }
+        }
+      });
+      context.SaveChanges();
+    }
+  }
 
   class StorageKeyDiscoveryConvention : KeyDiscoveryConvention
   {
